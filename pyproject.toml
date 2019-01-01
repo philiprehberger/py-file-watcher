@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "philiprehberger-file-watcher"
+version = "0.1.0"
+description = "Filesystem event watcher with decorator-based callbacks"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Philip Rehberger" }]
+dependencies = ["watchdog>=3.0"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Typing :: Typed",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/philiprehberger_file_watcher"]
