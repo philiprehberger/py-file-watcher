@@ -51,6 +51,14 @@ watcher.stop()
 | `recursive` | True | Watch subdirectories |
 | `debounce` | 0.5 | Debounce interval in seconds |
 
+
+## Development
+
+```bash
+pip install -e .
+python -m pytest tests/ -v
+```
+
 ## License
 
 MIT
