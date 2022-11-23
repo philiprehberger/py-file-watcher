@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.8 (2026-03-22)
+
+- Add pytest and mypy configuration to pyproject.toml
+
 ## 0.1.5
 
 - Add basic import test
