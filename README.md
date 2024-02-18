@@ -2,7 +2,11 @@
 
 [![Tests](https://github.com/philiprehberger/py-file-watcher/actions/workflows/publish.yml/badge.svg)](https://github.com/philiprehberger/py-file-watcher/actions/workflows/publish.yml)
 [![PyPI version](https://img.shields.io/pypi/v/philiprehberger-file-watcher.svg)](https://pypi.org/project/philiprehberger-file-watcher/)
+[![GitHub release](https://img.shields.io/github/v/release/philiprehberger/py-file-watcher)](https://github.com/philiprehberger/py-file-watcher/releases)
+[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/py-file-watcher)](https://github.com/philiprehberger/py-file-watcher/commits/main)
 [![License](https://img.shields.io/github/license/philiprehberger/py-file-watcher)](LICENSE)
+[![Bug Reports](https://img.shields.io/github/issues/philiprehberger/py-file-watcher/bug)](https://github.com/philiprehberger/py-file-watcher/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+[![Feature Requests](https://img.shields.io/github/issues/philiprehberger/py-file-watcher/enhancement)](https://github.com/philiprehberger/py-file-watcher/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 [![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
 Filesystem event watcher with decorator-based callbacks.
@@ -14,6 +18,8 @@ pip install philiprehberger-file-watcher
 ```
 
 ## Usage
+
+### Basic Watching
 
 ```python
 from philiprehberger_file_watcher import Watcher
@@ -41,17 +47,25 @@ watcher.start(background=True)
 watcher.stop()
 ```
 
-## Event Types
+### Batch Event Collection
+
+```python
+watcher = Watcher("./uploads")
+
+def handle_batch(events):
+    print(f"Received {len(events)} files at once")
+    for event in events:
+        print(f"  {event.path}")
+
+# Fire callback when 50 events collected or after 3 seconds
+watcher.on_batch("created", handle_batch, batch_size=50, timeout=3.0)
+
+watcher.start(background=True)
+```
+
+### Event Types
 
 `"created"`, `"modified"`, `"deleted"`, `"moved"`, `"any"`
-
-## Options
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `recursive` | True | Watch subdirectories |
-| `debounce` | 0.5 | Debounce interval in seconds |
-
 
 ## API
 
@@ -59,6 +73,11 @@ watcher.stop()
 |------------------|-------------|
 | `Watcher(path, recursive, debounce)` | Watch a directory for filesystem changes with decorator-based event handlers |
 | `FileEvent` | A filesystem event with `type`, `path`, `is_directory`, and `dest_path` fields |
+| `Watcher.on(event_type, pattern)` | Decorator to register a single-event callback |
+| `Watcher.add_listener(event_type, callback, pattern)` | Programmatically add an event listener |
+| `Watcher.on_batch(event_type, callback, batch_size, timeout)` | Register a batch callback that fires on size or timeout |
+| `Watcher.start(background)` | Start watching (blocking or background) |
+| `Watcher.stop()` | Stop watching |
 
 ## Development
 
@@ -67,6 +86,13 @@ pip install -e .
 python -m pytest tests/ -v
 ```
 
+## Support
+
+If you find this package useful, consider giving it a star on GitHub — it helps motivate continued maintenance and development.
+
+[![LinkedIn](https://img.shields.io/badge/Philip%20Rehberger-LinkedIn-0A66C2?logo=linkedin)](https://www.linkedin.com/in/philiprehberger)
+[![More packages](https://img.shields.io/badge/more-open%20source%20packages-blue)](https://philiprehberger.com/open-source-packages)
+
 ## License
 
-MIT
+[MIT](LICENSE)
