@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "philiprehberger-file-watcher"
-version = "0.1.1"
+version = "0.1.2"
 description = "Filesystem event watcher with decorator-based callbacks"
 readme = "README.md"
 license = "MIT"
