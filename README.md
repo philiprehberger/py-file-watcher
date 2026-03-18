@@ -6,7 +6,7 @@
 
 Filesystem event watcher with decorator-based callbacks.
 
-## Install
+## Installation
 
 ```bash
 pip install philiprehberger-file-watcher
@@ -51,6 +51,13 @@ watcher.stop()
 | `recursive` | True | Watch subdirectories |
 | `debounce` | 0.5 | Debounce interval in seconds |
 
+
+## API
+
+| Function / Class | Description |
+|------------------|-------------|
+| `Watcher(path, recursive, debounce)` | Watch a directory for filesystem changes with decorator-based event handlers |
+| `FileEvent` | A filesystem event with `type`, `path`, `is_directory`, and `dest_path` fields |
 
 ## Development
 
