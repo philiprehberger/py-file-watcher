@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "philiprehberger-file-watcher"
-version = "0.1.5"
+version = "0.1.6"
 description = "Filesystem event watcher with decorator-based callbacks"
 readme = "README.md"
 license = "MIT"
@@ -32,3 +32,9 @@ Changelog = "https://github.com/philiprehberger/py-file-watcher/blob/main/CHANGE
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/philiprehberger_file_watcher"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+strict = true
