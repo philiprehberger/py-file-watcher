@@ -40,17 +40,16 @@ watcher.start(background=True)
 watcher.stop()
 ```
 
-## Event Types
+### Event Types
 
 `"created"`, `"modified"`, `"deleted"`, `"moved"`, `"any"`
 
-## Options
+### Options
 
 | Option | Default | Description |
 |--------|---------|-------------|
 | `recursive` | True | Watch subdirectories |
 | `debounce` | 0.5 | Debounce interval in seconds |
-
 
 ## API
 
