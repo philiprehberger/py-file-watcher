@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0 (2026-03-27)
+
+- Add `Watcher.on_batch()` for batch event collection with size and timeout triggers
+- Add issue templates, PR template, and dependabot config
+- Update README with full badges, Support section, and new feature docs
+
 ## 0.1.8 (2026-03-22)
 
 - Add pytest and mypy configuration to pyproject.toml

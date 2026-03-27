@@ -142,6 +142,58 @@ class Watcher:
             self._observer.join()
             self._observer = None
 
+    def on_batch(
+        self,
+        event_type: EventType,
+        callback: Callable[[list[FileEvent]], None],
+        batch_size: int = 10,
+        timeout: float = 2.0,
+    ) -> None:
+        """Register a batch callback for efficient bulk event processing.
+
+        Collects events matching *event_type* into a buffer and fires
+        *callback* with the buffered list when either *batch_size* is reached
+        or *timeout* seconds have elapsed since the first buffered event.
+
+        Args:
+            event_type: Type of event to listen for.
+            callback: Called with a list of collected ``FileEvent`` objects.
+            batch_size: Maximum number of events to buffer before flushing.
+            timeout: Seconds to wait after the first buffered event before
+                flushing regardless of batch size.
+        """
+        buffer: list[FileEvent] = []
+        lock = threading.Lock()
+        timer: list[threading.Timer | None] = [None]
+
+        def _flush() -> None:
+            with lock:
+                if buffer:
+                    batch = list(buffer)
+                    buffer.clear()
+                    if timer[0] is not None:
+                        timer[0] = None
+                    callback(batch)
+
+        def _on_event(event: FileEvent) -> None:
+            with lock:
+                buffer.append(event)
+                if len(buffer) >= batch_size:
+                    if timer[0] is not None:
+                        timer[0].cancel()
+                        timer[0] = None
+                    batch = list(buffer)
+                    buffer.clear()
+                    callback(batch)
+                elif len(buffer) == 1:
+                    # First event in a new batch — start timeout
+                    t = threading.Timer(timeout, _flush)
+                    t.daemon = True
+                    timer[0] = t
+                    t.start()
+
+        self.add_listener(event_type, _on_event)
+
     @property
     def is_running(self) -> bool:
         return self._running
