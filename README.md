@@ -3,6 +3,7 @@
 [![Tests](https://github.com/philiprehberger/py-file-watcher/actions/workflows/publish.yml/badge.svg)](https://github.com/philiprehberger/py-file-watcher/actions/workflows/publish.yml)
 [![PyPI version](https://img.shields.io/pypi/v/philiprehberger-file-watcher.svg)](https://pypi.org/project/philiprehberger-file-watcher/)
 [![License](https://img.shields.io/github/license/philiprehberger/py-file-watcher)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
 Filesystem event watcher with decorator-based callbacks.
 
