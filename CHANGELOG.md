@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 (2026-05-30)
+
+- Add `Watcher.unwatch(path)` to stop watching a specific path
+- Add `Watcher.watched_paths()` returning a snapshot of currently-watched paths
+
 ## 0.2.1 (2026-03-31)
 
 - Standardize README to 3-badge format with emoji Support section

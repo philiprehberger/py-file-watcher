@@ -58,6 +58,20 @@ watcher.on_batch("created", handle_batch, batch_size=50, timeout=3.0)
 watcher.start(background=True)
 ```
 
+### Stopping watches and introspection
+
+```python
+watcher = Watcher("./src")
+watcher.start(background=True)
+
+# Inspect currently-watched paths
+print(watcher.watched_paths())  # ['/abs/path/to/src']
+
+# Stop watching a specific path
+removed = watcher.unwatch("./src")  # True if the path was being watched
+print(watcher.watched_paths())  # []
+```
+
 ### Event Types
 
 `"created"`, `"modified"`, `"deleted"`, `"moved"`, `"any"`
@@ -73,6 +87,8 @@ watcher.start(background=True)
 | `Watcher.on_batch(event_type, callback, batch_size, timeout)` | Register a batch callback that fires on size or timeout |
 | `Watcher.start(background)` | Start watching (blocking or background) |
 | `Watcher.stop()` | Stop watching |
+| `Watcher.unwatch(path)` | Stop watching a specific path; returns `True` if the path was being watched |
+| `Watcher.watched_paths()` | Return a snapshot list of currently-watched paths |
 
 ## Development
 

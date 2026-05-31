@@ -11,6 +11,7 @@ from typing import Callable, Literal
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
+from watchdog.observers.api import ObservedWatch
 
 __all__ = ["Watcher", "FileEvent"]
 
@@ -89,6 +90,7 @@ class Watcher:
         self._listeners: dict[str, list[tuple[str | None, Callable[[FileEvent], None]]]] = {}
         self._observer: Observer | None = None
         self._running = False
+        self._watches: dict[str, ObservedWatch] = {}
 
     def on(
         self,
@@ -123,7 +125,8 @@ class Watcher:
         """
         handler = _Handler(self)
         self._observer = Observer()
-        self._observer.schedule(handler, self._path, recursive=self._recursive)
+        watch = self._observer.schedule(handler, self._path, recursive=self._recursive)
+        self._watches[self._path] = watch
         self._observer.start()
         self._running = True
 
@@ -141,6 +144,22 @@ class Watcher:
             self._observer.stop()
             self._observer.join()
             self._observer = None
+        self._watches.clear()
+
+    def unwatch(self, path: str | Path) -> bool:
+        """Stop watching *path*. Returns True if the path was being watched."""
+        resolved = str(Path(path).resolve())
+        watch = self._watches.get(resolved)
+        if watch is None:
+            return False
+        if self._observer is not None:
+            self._observer.unschedule(watch)
+        del self._watches[resolved]
+        return True
+
+    def watched_paths(self) -> list[str]:
+        """Return a snapshot of currently-watched paths."""
+        return list(self._watches.keys())
 
     def on_batch(
         self,
